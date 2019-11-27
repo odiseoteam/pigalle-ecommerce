@@ -1,0 +1,59 @@
+{% extends 'PigalleBundle::layout.html.twig' %}
+
+{% block content %}
+<div class="collection">
+	<div class="container">
+		<h3 class="titleSection">Colecciones / <small>{{ season.name }}</small></h3>
+		
+		<div class="filters clearfix">
+			<form method="get">
+				{% for taxonomy in taxonomies %}
+				<div class="filter filterAccordion">
+					<a class="accordionHeader collapsed" data-toggle="collapse" href="#filterAccordionBody{{ loop.index }}">{{ taxonomy.name }}</a>
+					<ul id="filterAccordionBody{{ loop.index }}" class="collapse">
+						{% if taxonomy.name != 'Temporada' %}
+						<li><a href="{{ path('pigalle_collection', { 's': season.permalink }) }}">Todos</a></li>
+						{% endif %}
+						{% for taxon in taxonomy.getTaxonsForColecciones %}
+						{%   if taxonomy.name != 'Temporada' %}
+						<li><a href="{{ path('pigalle_collection', { 's': season.permalink, 't': taxon.permalink }) }}">{{ taxon.name }}</a></li>
+						{%   else %}
+						<li><a href="{{ path('pigalle_collection', { 's': taxon.permalink }) }}">{{ taxon.name }}</a></li>
+						{%   endif %}
+						{% endfor %}
+					</ul>
+				</div>
+				{% endfor %}
+			</form>
+		</div>
+		
+		<div id="collectionSlider" class="products carousel slide" data-interval="0">	
+			<div class="carousel-inner">
+				{% for product in products %}
+				<div class="item{{ loop.first?' active':'' }}">
+					<div class="facebookLike">
+						<div class="fb-like" data-href="{{ url('pigalle_product_show', {'slug': product.slug}) }}" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+					</div>
+					<div class="image">
+						<img src="{{ product.image.path|imagine_filter('pigalle_460x460') }}" />
+					</div>
+					<div class="socalo">
+						<p class="productName">{{ product.name }}</p>
+						<p>{{ season.name }}</p>
+					</div>
+				</div>
+				{% endfor %}		
+			</div>
+			<!-- Carousel nav -->
+			<div class="controls">			
+				<a class="carousel-control left" href="#collectionSlider" data-slide="prev">&lsaquo;</a>
+				<a class="carousel-control right" href="#collectionSlider" data-slide="next">&rsaquo;</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block featured_products %}
+{{ render(controller('PigalleBundle:Product:featuredProducts')) }}
+{% endblock %}

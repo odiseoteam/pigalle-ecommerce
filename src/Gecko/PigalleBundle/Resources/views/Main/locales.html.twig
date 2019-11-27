@@ -1,0 +1,44 @@
+{% extends 'PigalleBundle::layout.html.twig' %}
+
+{% block content %}
+<div id="slider" class="carousel slide">
+	<!-- Carousel items -->
+	<div class="carousel-inner">
+		<div class="item active" style="background-image:url({{ asset('bundles/pigalle/images/sectionHeaderBackground.jpg') }});"></div>
+	</div>
+</div>
+<div class="socaloGris"></div>
+<div class="container locales">
+	<div class="tab">Locales</div>
+	<div class="list row">
+		<div class="span3">		
+		{% for location, locals in localsLocation %}
+		{%   if locals|length > 0 %}
+		{%     for local in locals %}
+		{%         if loop.first %}
+		<h2>{{ local.getLocationName }}</h2>
+		{%         endif %}
+		<div class="local{{ local.getIsFeatured == true?' featured':'' }}">
+			<p class="name">{{ local.getName }}</p>
+			<p>{{ local.getAddress }}</p>
+			{% if local.getAddress2 is defined %}
+			<p>{{ local.getAddress2 }}</p>
+			{% endif %}
+			{% if local.getPhone is defined %}
+			<p>{{ local.getPhone }}</p>
+			{% endif %}
+			{% if local.getEmail is defined %}
+			<p><a href="mailto:{{ local.getEmail }}">{{ local.getEmail }}</a></p>
+			{% endif %}
+		</div>
+		{%         if (loop.index % (totalLocals / 4)|ceil) == 0 %}
+		</div>
+		<div class="span3">		
+		{%         endif %}
+		{%     endfor %}
+		{%   endif %}
+		{% endfor %}
+		</div>
+	</div>	
+</div>
+{% endblock %}

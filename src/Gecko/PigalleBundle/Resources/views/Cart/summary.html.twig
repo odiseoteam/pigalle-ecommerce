@@ -1,0 +1,76 @@
+{% extends 'PigalleBundle::layout.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block content %}
+<div class="cart">
+	<div class="contentTitle"><h3 class="titleSection container">Mis compras</h3></div>
+	<div class="container">
+	{% if not cart.empty %}
+		{{ form_errors(form) }}
+		<form action="{{ path('sylius_cart_save') }}" method="post" novalidate>
+			<table class="table" width="100%">
+	  			<thead>
+	    			<tr>
+	      				<th width="8%">#</th>
+						<th width="48%">MODELO</th>
+						<th width="11%">CANTIDAD</th>
+						<th width="15%">PRECIO UNITARIO</th>
+						<th width="10%">TOTAL</th>
+						<th width="8%">ELIMINAR</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for item in cart.items %}
+		            {% include 'PigalleBundle:Cart:_item.html.twig' %}
+		        {% endfor %}
+				</tbody>
+			</table>
+			{{ form_widget(form._token) }}
+			<div class="cartActions">
+				{% if is_granted('ROLE_USER_MAYORISTA') %}
+    			<a href="{{ path('pigalle_mayorista_index') }}" class="button clearCartButton">SEGUIR COMPRANDO</a>
+    			{% else %}
+				<a href="{{ path('pigalle_product_index') }}" class="button clearCartButton">SEGUIR COMPRANDO</a>
+				{% endif %}
+				<a href="{{ path('sylius_cart_clear') }}" class="button grayButton clearCartButton">VACIAR COMPRAS</a>
+				<button type="submit" class="button grayButton saveCartButton">GUARDAR CAMBIOS</button>
+			</div>
+			<div class="cartTotal">
+				{% if is_granted('ROLE_USER_MAYORISTA') %}
+				<a href="{{ path('pigalle_mayorista_order') }}" class="button checkoutButton">REALIZAR PEDIDO MAYORISTA</a>
+				{% else %}
+				<div class="cartCoupon clearfix">
+					<p>TENGO CUPON:</p>
+					<input type="text" id="sylius_cart_couponCode" name="sylius_cart[couponCode]" class="coupon" value="{{ form.vars.value.couponCode }}">
+				</div>
+				<div class="total">
+					<p class="title">TOTAL:</p>
+					<div class="flagOferta">
+						<p>{{ cart.total|price }}</p>
+						<div class="tail">&nbsp;</div>
+					</div>
+					<a href="{{ path('sylius_checkout_start') }}" class="button checkoutButton">REALIZAR COMPRA</a>
+				</div>
+				{% endif %}
+			</div>
+		</form>
+	{% else %}
+		<div class="sectionMessage emptyCart">
+    		<h2>&iexcl;Tu bolsa de compras se encuentra vacia!</h2>
+    		<div class="hr"><hr /></div>
+    		{% if is_granted('ROLE_USER_MAYORISTA') %}
+    		<p>Visita nuestra seccion de <a href="{{ path('pigalle_mayorista_index') }}">Mayoristas</a>.</p>
+    		{% else %}
+    		<p>Visita nuestro <a href="{{ path('pigalle_product_index') }}">online store</a>.</p>
+    		{% endif %}
+    	</div>
+	{% endif %}
+	</div>
+</div>
+{% endblock %}
+
+{% block sylius_cart_item_row %}
+	{{ parent() }}
+	{% block form_message %}{% endblock %}
+{% endblock %}

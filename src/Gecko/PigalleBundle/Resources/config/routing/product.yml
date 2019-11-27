@@ -1,0 +1,36 @@
+pigalle_product_index:
+    pattern: /
+    defaults:
+        _controller: sylius.controller.product:indexAction
+        _sylius:
+            paginate: 9
+            template: PigalleBundle:Product:index.html.twig
+            arguments: 
+              spPageTemplate: PigalleBundle:Product:indexSpPage.html.twig
+            
+pigalle_product_index_by_taxon:
+    pattern: /t/{permalink}
+    defaults:
+        _controller: sylius.controller.product:indexByTaxonAction
+        _sylius:
+            paginate: 9
+            template: PigalleBundle:Product:index.html.twig
+            arguments: 
+              spPageTemplate: PigalleBundle:Product:indexSpPage.html.twig
+
+pigalle_product_show:
+    pattern:        /p/{slug}
+    defaults:
+        _controller:    sylius.controller.product:showAction
+        _sylius:
+            template: PigalleBundle:Product:show.html.twig
+            criteria: {slug: $slug}
+            
+pigalle_product_quickview:
+    pattern:        /p/quickview/id
+    defaults:
+        _controller:    sylius.controller.product:quickviewAction
+        _sylius:
+            template: PigalleBundle:Product:quickview.html.twig
+    requirements:
+        id:  \d+

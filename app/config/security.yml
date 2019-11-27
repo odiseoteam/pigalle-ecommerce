@@ -1,0 +1,49 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+security:
+    providers:
+        fos_userbundle:
+            id: fos_user.user_manager
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+    firewalls:
+        mayorista:
+            pattern:    /mayorista/.*
+            form_login:
+                provider: fos_userbundle
+                login_path: /mayorista/login
+                check_path: /mayorista/login_check
+                use_referer: true
+            anonymous: true
+            context: pigalle_context
+        main:
+            form_login:
+                provider: fos_userbundle
+                login_path: /login
+                check_path: /login_check
+                use_referer: true
+            remember_me:
+                key: %sylius.secret%
+                name: APP_REMEMBER_ME
+                lifetime: 31536000
+                always_remember_me: true
+                remember_me_parameter: _remember_me
+            logout:     
+                path: fos_user_security_logout
+                target: /
+                invalidate_session: true
+            anonymous: true
+            context: pigalle_context
+    access_denied_url: /sin-autorizacion
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/mayorista/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/mayorista/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/mayorista/registro/completo$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /mayorista/.*, roles: [ROLE_USER_MAYORISTA, ROLE_SYLIUS_ADMIN] }
+        - { path: "/admin.*", role: ROLE_SYLIUS_ADMIN }
+        - { path: "/cuenta.*", role: ROLE_USER }
+        - { path: "/_partial.*", ip: 127.0.0.1 }

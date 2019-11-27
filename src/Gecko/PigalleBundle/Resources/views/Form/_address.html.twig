@@ -1,0 +1,57 @@
+{% set widgetAttributes = widgetAttributes is defined?widgetAttributes:{} %}
+<div class="control-group">
+	{{ form_errors(form.firstName) }}
+	{{ form_label(form.firstName, 'Nombre y apellido:') }}
+	<div class="controls">
+		{{ form_widget(form.firstName, widgetAttributes) }}
+	</div>
+</div>
+<div class="control-group">
+	{{ form_errors(form.street) }}
+	{{ form_label(form.street, 'Dirección:') }}
+	<div class="controls">
+		{{ form_widget(form.street, widgetAttributes) }}
+	</div>
+</div>
+<div class="control-group streetOptions">
+	{{ form_errors(form.postcode) }}
+	<div class="row-fluid">			
+		<div class="span4">
+			{{ form_label(form.floor, 'Piso:') }}
+			<div class="controls">
+				{{ form_widget(form.floor, widgetAttributes) }}
+			</div>
+		</div>
+		<div class="span4">
+			{{ form_label(form.department, 'Depto:') }}
+			<div class="controls">
+				{{ form_widget(form.department, widgetAttributes) }}
+			</div>
+		</div>
+		<div class="span4">			
+			{{ form_label(form.postcode, 'CP.:') }}
+			<div class="controls">
+				{{ form_widget(form.postcode, widgetAttributes) }}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="control-group province-container" data-url="{{ path('sylius_province_choice_form') }}">
+	{% if form.province is defined %}
+	{{ form_errors(form.province) }}
+	{{ form_label(form.province, 'Provincia:') }}
+	<div class="controls">
+		{{ form_widget(form.province, widgetAttributes) }}
+	</div>
+	{% endif %}
+</div>
+<div class="control-group">
+	{{ form_errors(form.city) }}
+	{{ form_label(form.city, 'Localidad:') }}
+	<div class="controls">
+		{{ form_widget(form.city, widgetAttributes) }}
+	</div>
+</div>
+<div style="display:none;">
+	{{ form_rest(form) }}	
+</div>

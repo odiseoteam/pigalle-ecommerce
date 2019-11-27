@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+{% set cart = sylius_cart_get() %}
+{% set settings = sylius_settings_all('general') %}
+<html>
+    <head>
+        <title>{% block title %}{{ settings.title|default('Pigalle') }}{% endblock %}</title>
+        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{{ settings.meta_description|default('Pigalle - Venta de calzado online') }}">
+        <meta name="keywords" content="{{ settings.meta_keywords|default('pigalle, calzado, eshop, compra, online-store, store') }}">
+        
+        <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        
+        {# stylesheets... #}
+        {% block stylesheets %}
+        {% stylesheets output='css/compiled/frontend.css' filter='cssrewrite'
+            '//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap.no-responsive.no-icons.min.css'
+            'http://fonts.googleapis.com/css?family=Lato:300,400,700'
+            'http://fonts.googleapis.com/css?family=Croissant+One'
+            '@SyliusBackendBundle/Resources/assets/css/bootstrap-image-gallery.min.css'
+            'bundles/pigalle/css/main.css'
+            'bundles/pigalle/css/sections.css'
+        %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+        {% endstylesheets %}
+        {% endblock %}
+    </head>
+    <body>
+    	<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/es_LA/all.js#xfbml=1&appId=493058447438923";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+		
+		<div id="header">
+			<div class="container">
+				{{ render(controller('PigalleBundle:Main:newsletterSubscribeWidget')) }}
+				<div class="pull-right">
+					{{ knp_menu_render('pigalle.menu.user') }}
+					<div class="cartItems">
+						<a href="{{ path('sylius_cart_summary') }}">{{ cart.totalItems }}</a>
+					</div>
+				</div>
+				
+				{# quickview cart #}
+				{% include 'PigalleBundle:Cart:quickviewCart.html.twig' %}
+			</div>
+		</div>
+		
+		<div id="menu">
+			<div class="container">		
+				{{ knp_menu_render('pigalle.menu.main_left', {'currentClass': 'active'}) }}
+				<a href="{{ path('pigalle_homepage') }}" class="logo"><img src="{{ asset('bundles/pigalle/images/logo-pigalle.png') }}" alt="Pigalle" /></a>
+				{{ knp_menu_render('pigalle.menu.main_right', {'currentClass': 'active', 'allow_safe_labels': true}) }}
+			</div>
+		</div>
+  
+		<div id="content">
+			{% block content %}{% endblock %}
+			{% block featured_products %}{% endblock %}
+		</div>
+				
+		<div id="footer">
+    		<div class="socaloFooter"></div>
+        	<div class="footerContent">
+            	<div class="container">
+					<div class="row">
+						<div class="span2">
+							<h3>MAPA DEL SITIO</h3>
+							{{ knp_menu_render('pigalle.menu.footer') }}
+						</div>
+						<div class="span2">
+							<h3>TÉRMINOS</h3>
+							<p>El uso de este sitio web implica la aceptación de los <a href="{{ asset('terminos_y_condiciones.pdf') }}" target="_blank"><u>TÉRMINOS Y CONDICIONES</u></a> y de las <a href="#"><u>POLÍTICAS DE PRIVACIDAD</u></a></p>
+						</div>
+						<div class="span2">
+						<!--  	<h3>FAQ's</h3>
+							<ul>
+								<li><a href="{{ path('pigalle_faq') }}#faq1">Lorem ipsum dolor sit?</a></li>
+								<li><a href="{{ path('pigalle_faq') }}#faq2">Lorem ipsum dolor sit?</a></li>
+								<li><a href="{{ path('pigalle_faq') }}#faq3">Lorem ipsum dolor sit?</a></li>
+								<li><a href="{{ path('pigalle_faq') }}#faq4">Lorem ipsum dolor sit?</a></li>
+							</ul>
+							<p><a href="{{ path('pigalle_faq') }}">Ver Más</a></p>
+						-->
+						</div>
+						<div class="span2">
+							<h3>DATA FISCAL</h3>
+							<p>PIGALLE ACCESORI SA <br />IVA RESPONSABLE INSCRIPTO <br />Las Heras 670<br /> Ramos Mejía (C.P. 1704)<br /> Buenos Aires</p>
+						</div>
+						<div class="span2 dataFiscal">
+							<a href="http://qr.afip.gob.ar/?qr=ap0Wygcx_4LZycOiAxiZLg,," target="_F960AFIPInfo"><img src="http://www.afip.gob.ar/images/f960/DATAWEB.jpg" border="0"></a>
+						</div>
+						<div class="span2 logo">
+							<img src="{{ asset('bundles/pigalle/images/pigalle-copyright.png') }}" alt="Logo Pigalle Copyright" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    
+		{# modal gallery #}
+		{% include 'PigalleBundle::gallery.html.twig' %}
+		
+		{# modal quickview #}
+		{% include 'PigalleBundle::quickview.html.twig' %}
+		
+        {# javascripts... #}
+        {% block javascripts %}
+        {% javascripts output='js/compiled/frontend.js'
+            'http://code.jquery.com/jquery-1.10.0.min.js'
+            '//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js'
+            '@PigalleBundle/Resources/assets/js/jquery.elevateZoom-2.6.0.min.js'
+            '@PigalleBundle/Resources/assets/js/jquery.scrollPagination.js'
+            '@PigalleBundle/Resources/assets/js/main.js'            
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        {% endblock %}
+    </body>
+</html>

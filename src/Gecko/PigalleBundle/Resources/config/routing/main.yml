@@ -1,0 +1,63 @@
+pigalle_homepage:
+    pattern:        /
+    defaults:       { _controller: PigalleBundle:Main:index }
+
+pigalle_la_marca:
+    pattern:        /la-marca
+    defaults:       { _controller: PigalleBundle:Main:laMarca }
+
+pigalle_locales:
+    pattern:        /locales
+    defaults:       { _controller: PigalleBundle:Main:locales }
+        
+sylius_product:
+    resource: @PigalleBundle/Resources/config/routing/product.yml
+    prefix:   /online-store
+
+sylius_cart:
+    resource: @PigalleBundle/Resources/config/routing/cart.yml
+        
+sylius_account:
+    resource: @PigalleBundle/Resources/config/routing/account.yml
+    prefix: /mi-cuenta
+    
+pigalle_checkout_success:
+    pattern:     /checkout/gracias
+    defaults:    { _controller: PigalleBundle:Main:checkoutSuccess }
+
+pigalle_unauthorized:
+    pattern:        /sin-autorizacion
+    defaults:       { _controller: PigalleBundle:Main:unauthorized }
+        
+sylius_checkout:
+    resource: @PigalleBundle/Resources/config/routing/checkout.yml
+    prefix: /checkout
+    
+sylius_province_choice_form:
+    pattern: /province/choice-form
+    defaults:
+        _controller: sylius.controller.province:choiceFormAction
+
+pigalle_collection:
+    pattern:     /colecciones
+    defaults:    { _controller: PigalleBundle:Main:collection }
+         
+pigalle_mayorista:
+    resource: @PigalleBundle/Resources/config/routing/mayorista.yml
+    prefix:   /mayorista
+
+pigalle_faq:
+    pattern:     /faq
+    defaults:    { _controller: PigalleBundle:Main:faq }
+           
+pigalle_contact:
+    pattern:     /contacto
+    defaults:    { _controller: PigalleBundle:Main:contact }
+      
+#sylius_partial:
+#    resource: @SyliusWebBundle/Resources/config/routing/partial/main.yml
+#    prefix: /_partial
+
+_imagine:
+    resource: .
+    type:     imagine

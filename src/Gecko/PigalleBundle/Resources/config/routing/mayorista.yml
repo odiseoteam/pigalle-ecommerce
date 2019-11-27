@@ -1,0 +1,48 @@
+pigalle_mayorista_index:
+    pattern: /
+    defaults:
+        _controller: pigalle.controller.mayorista:indexAction
+        _sylius:
+            paginate: 9
+            template: PigalleBundle:Mayorista:index.html.twig
+            arguments: 
+              spPageTemplate: PigalleBundle:Mayorista:indexSpPage.html.twig
+            
+pigalle_mayorista_index_by_taxon:
+    pattern: /t/{permalink}
+    defaults:
+        _controller: pigalle.controller.mayorista:indexByTaxonAction
+        _sylius:
+            paginate: 9
+            template: PigalleBundle:Mayorista:index.html.twig
+            arguments: 
+              spPageTemplate: PigalleBundle:Mayorista:indexSpPage.html.twig
+
+pigalle_mayorista_show:
+    pattern:        /p/{slug}
+    defaults:
+        _controller:    pigalle.controller.mayorista:showAction
+        _sylius:
+            template: PigalleBundle:Mayorista:show.html.twig
+            criteria: {slug: $slug}
+            
+pigalle_mayorista_quickview:
+    pattern:        /p/quickview/id
+    defaults:
+        _controller:    pigalle.controller.mayorista:quickviewAction
+        _sylius:
+            template: PigalleBundle:Mayorista:quickview.html.twig
+    requirements:
+        id:  \d+
+
+pigalle_mayorista_order:
+    pattern: /realizar-pedido
+    defaults:
+        _controller:    pigalle.controller.mayorista:orderAction
+        _sylius:
+            template: PigalleBundle:Mayorista:ordered.html.twig
+                              
+pigalle_mayorista_register_success:
+    pattern: /registro/completo
+    defaults:
+        _controller: pigalle.controller.mayorista:registerSuccessAction

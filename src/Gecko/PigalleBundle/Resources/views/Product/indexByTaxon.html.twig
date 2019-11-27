@@ -1,0 +1,16 @@
+{% extends 'PigalleBundle::layout.html.twig' %}
+
+{% from 'PigalleBundle:Macros:misc.html.twig' import pagination %}
+{% from 'PigalleBundle:Product:macros.html.twig' import list %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ 'sylius.product.index_by_taxon_header'|trans({'%taxon%': taxon.name})|raw }}</h1>
+</div>
+
+<div class="scrollPagination">
+	{{ grid(products) }}
+	{{ pagination(products) }}
+</div>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'PigalleBundle::layout.html.twig' %}
+
+{% block javascripts %}
+{{ parent() }}
+{% javascripts '@PigalleBundle/Resources/assets/js/province-choices.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+<div class="checkout addressing step2">
+	<div class="contentTitle"><h3 class="titleSection container">Proceso de compra - Dirección</h3></div>
+	<div class="container content">
+		{% include 'PigalleBundle:Checkout:_progressBar.html.twig' with {'step': 2 } %}
+
+		{% if error is defined or form.vars.errors|length or form.vars.errors|length %}
+		<div class="alert alert-error">
+    		Verifique los datos ingresados. Todos los campos son obligatorios.
+		</div>
+		{% endif %}
+		
+		<form method="post" action="{{ path('sylius_checkout_forward', {'stepName': context.currentStep.name}) }}" novalidate="novalidate">
+			<div class="row-fluid">
+				<div class="span4 message step2Message">
+					<span class="circle">2</span>
+					<h3>Dejanos tus datos por favor</h3>
+					<img src="{{ asset('bundles/pigalle/images/address-ico-big.png') }}" alt="Direccion" />
+				</div>
+				<div class="span4 shippingAddress">
+					<h2>Dirección de envio</h2>
+					<fieldset>
+						{% include 'PigalleBundle:Form:_address.html.twig' with {'form': form.shippingAddress} %}
+						<div class="control-group differentBillingAddress">
+							{{ form_widget(form.differentBillingAddress) }}
+							{{ form_label(form.differentBillingAddress, "Usar una dirección diferente para facturación", {'attr': {'class': 'sylius-different-billing-address-trigger'}}) }}
+						</div>
+					</fieldset>
+				</div>
+				<div class="span4 billing" id="sylius-billing-address-container">
+					<h2>Dirección de facturación</h2>
+					<fieldset class="disabled">
+						{% include 'PigalleBundle:Form:_address.html.twig' with {'form': form.billingAddress, 'widgetAttributes': {'attr': {'disabled': 'disabled'}} } %}
+					</fieldset>
+				</div>
+				<div style="display:none">
+					{{ form_rest(form) }}
+				</div>
+			</div>
+			
+			<button type="submit" class="button nextButton">Siguiente</button>
+		</form>
+	</div>
+</div>
+{% endblock %}
